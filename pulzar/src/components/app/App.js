@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 import Scheduler from '../scheduler/Scheduler';
 import Card from 'react-bootstrap/Card';
 
@@ -12,16 +13,21 @@ function App() {
     <Container fluid>
       <Navbar bg="light">
         <Navbar.Brand href="#home">Pulzar</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="#link">Summary</Nav.Link>
+            <Nav.Link href="#link">Launcher</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
-      <Row>
+      <Row className='mt-5'>
         <Col>
-          <Card>
-            <Card.Header>Scheduler</Card.Header>
-            <Card.Body>
 
-              <Scheduler></Scheduler>
-            </Card.Body>
-          </Card>
+
+          <Scheduler></Scheduler>
+
         </Col>
       </Row>
     </Container>

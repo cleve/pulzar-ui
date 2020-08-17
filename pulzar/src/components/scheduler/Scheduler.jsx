@@ -2,13 +2,42 @@ import React from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Table from 'react-bootstrap/Table';
+import Badge from 'react-bootstrap/Badge';
+import axios from 'axios';
+
 
 class Scheduler extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            scheduled_jobs: [],
+            failed_jobs: []
+        };
+    }
+
+    getJobs = () => {
+
+    }
+
+    componentDidMount() {
+        const self = this;
+        axios.get('http://127.0.0.1:9000/admin/jobs')
+            .then(res => {
+                console.log(res.data);
+                if (res.data) {
+                    self.setState({
+                        scheduled_jobs: res.data.scheduled
+                    });
+                }
+            })
+    }
+
     render() {
+        const scheduled = this.state.scheduled_jobs;
         return (
             <Tabs defaultActiveKey="scheduled" id="scheduled-tab">
                 <Tab eventKey="scheduled" title="Scheduled">
-                    <Table striped bordered hover className='mt-5'>
+                    <Table striped bordered hover className='mt-5' size="sm">
                         <thead>
                             <tr>
                                 <th>Job ID</th>
@@ -20,37 +49,26 @@ class Scheduler extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td colSpan="2">Larry the Bird</td>
-                                <td>@twitter</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
+                            {
+                                scheduled.map(elem => (
+                                    <tr key={'scheduled_' + elem.job_id}>
+                                        <td key={'sch_jid' + elem.job_id}>{elem.job_id}</td>
+                                        <td key={'sch_jn' + elem.job_id}>{elem.job_name}</td>
+                                        <td key={'sch_par' + elem.job_id}>{elem.parameters}</td>
+                                        <td key={'sch_int' + elem.job_id}>{elem.interval}</td>
+                                        <td key={'sch_tu' + elem.job_id}>{elem.time_unit}</td>
+                                        <td key={'sch_ne' + elem.job_id}>{elem.next_execution}</td>
+                                    </tr>
+                                ))
+                            }
                         </tbody>
                     </Table>
                 </Tab>
-                <Tab eventKey="succesful" title="Succesful">
-                    Text
+                <Tab eventKey="successful" title="Successful">
+                    <div>Text</div>
                 </Tab>
                 <Tab eventKey="failed" title="Failed">
-                    Text
+                    <div>TExt 3</div>
                 </Tab>
             </Tabs>
         );
