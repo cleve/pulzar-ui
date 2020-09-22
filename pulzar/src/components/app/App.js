@@ -24,10 +24,7 @@ function App() {
       </Navbar>
       <Row className='mt-5'>
         <Col>
-
-
           <Scheduler></Scheduler>
-
         </Col>
       </Row>
     </Container>
