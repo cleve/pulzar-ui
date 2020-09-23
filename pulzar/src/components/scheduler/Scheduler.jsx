@@ -45,7 +45,7 @@ class Scheduler extends React.Component {
     loadJobHistory(jobId) {
         const self = this;
         this.setState({ show_history: true });
-        axios.get('http://127.0.0.1:31414/admin/scheduled_jobs/' + jobId)
+        axios.get('http://127.0.0.1:31414/admin/scheduled_jobs/' + jobId + '?limit=100')
             .then(res => {
                 if (res.data) {
                     console.log(res.data.data);
