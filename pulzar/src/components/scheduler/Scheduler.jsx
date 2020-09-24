@@ -96,8 +96,8 @@ class Scheduler extends React.Component {
                                 </thead>
                                 <tbody>
                                     {
-                                        scheduled.map(elem => (
-                                            <tr key={'scheduled_' + elem.job_id}>
+                                        scheduled.map((elem, index) => (
+                                            <tr key={index}>
                                                 <td key={'sch_jid' + elem.job_id}>{elem.job_id}</td>
                                                 <td key={'sch_jn' + elem.job_id}>{elem.job_name}</td>
                                                 <td key={'sch_par' + elem.job_id}>{elem.parameters}</td>
@@ -130,9 +130,9 @@ class Scheduler extends React.Component {
                             </thead>
                             <tbody>
                                 {
-                                    scheduledOk.map(elem => (
-                                        <tr key={'scheduledSuccess'}>
-                                            <td key={'schOk_jid' + elem.job_id}>{elem.job_id}</td>
+                                    scheduledOk.map((elem, index) => (
+                                        <tr key={index}>
+                                            <td key={'schOk_jid' + elem.job_id.toS}>{elem.job_id}</td>
                                             <td key={'schOk_jn' + elem.job_id}>{elem.job_name}</td>
                                             <td key={'schOk_par' + elem.job_id}>{elem.parameters}</td>
                                             <td key={'schOk_int' + elem.job_id}>{elem.interval}</td>
@@ -164,8 +164,8 @@ class Scheduler extends React.Component {
                             </thead>
                             <tbody>
                                 {
-                                    scheduledFailed.map(elem => (
-                                        <tr key={'scheduledFailed'}>
+                                    scheduledFailed.map((elem, index) => (
+                                        <tr key={index}>
                                             <td key={'schFailed_jid' + elem.job_id}>{elem.job_id}</td>
                                             <td key={'schFailed_jn' + elem.job_id}>{elem.job_name}</td>
                                             <td key={'schFailed_par' + elem.job_id}>{elem.parameters}</td>
@@ -199,8 +199,8 @@ class Scheduler extends React.Component {
                             </thead>
                             <tbody>
                                 {
-                                    scheduled_history.map(elem => (
-                                        <tr>
+                                    scheduled_history.map((elem, index) => (
+                                        <tr key={index}>
                                             <td>{elem.state}</td>
                                             <td>{elem.log}</td>
                                             <td>{elem.output}</td>
