@@ -5,6 +5,8 @@ import Col from 'react-bootstrap/Col';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Scheduler from '../scheduler/Scheduler';
+import Launcher from '../launcher/Launcher';
+import Home from '../home/Home';
 
 class Entrance extends React.Component {
     constructor(props) {
@@ -68,6 +70,8 @@ class Entrance extends React.Component {
                 <Row className='mt-5'>
                     <Col>
                         {schedulerPage ? <Scheduler /> : null}
+                        {launcherPage ? <Launcher /> : null}
+                        {homePage ? <Home /> : null}
                     </Col>
                 </Row>
             </Container>
