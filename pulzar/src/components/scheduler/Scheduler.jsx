@@ -13,6 +13,8 @@ class Scheduler extends React.Component {
         super(props);
         this.state = {
             scheduled_jobs: [],
+            ok_scheduled_jobs: [],
+            failed_scheduled_jobs: [],
             scheduled_executions: [],
             failed_jobs: [],
             show_history: false
@@ -34,9 +36,24 @@ class Scheduler extends React.Component {
         axios.get('http://127.0.0.1:31414/admin/scheduled_jobs')
             .then(res => {
                 if (res.data) {
-                    console.log(res.data.data);
                     self.setState({
                         scheduled_jobs: res.data.data
+                    });
+                }
+            });
+        axios.get('http://127.0.0.1:31414/admin/scheduled_jobs/ok?limit=100')
+            .then(res => {
+                if (res.data) {
+                    self.setState({
+                        ok_scheduled_jobs: res.data.data
+                    });
+                }
+            })
+        axios.get('http://127.0.0.1:31414/admin/scheduled_jobs/failed?limit=100')
+            .then(res => {
+                if (res.data) {
+                    self.setState({
+                        failed_scheduled_jobs: res.data.data
                     });
                 }
             })
@@ -48,7 +65,6 @@ class Scheduler extends React.Component {
         axios.get('http://127.0.0.1:31414/admin/scheduled_jobs/' + jobId + '?limit=100')
             .then(res => {
                 if (res.data) {
-                    console.log(res.data.data);
                     self.setState({
                         scheduled_executions: res.data.data.last_executions
                     });
@@ -59,6 +75,8 @@ class Scheduler extends React.Component {
     render() {
         const scheduled = this.state.scheduled_jobs;
         const scheduled_history = this.state.scheduled_executions;
+        const scheduledOk = this.state.ok_scheduled_jobs;
+        const scheduledFailed = this.state.failed_scheduled_jobs;
         return (
             <div>
                 <Tabs transition={false} defaultActiveKey="scheduled" id="scheduled-tab">
@@ -96,10 +114,72 @@ class Scheduler extends React.Component {
                             </Table> : null}
                     </Tab>
                     <Tab eventKey="successful" title="Successful" disabled={this.state.show_history}>
-                        <div>Text</div>
+                        <Table striped bordered hover className='mt-5' size="sm">
+                            <thead>
+                                <tr>
+                                    <th>Job ID</th>
+                                    <th>Job Name</th>
+                                    <th>Parameters</th>
+                                    <th>Interval</th>
+                                    <th>Time unit</th>
+                                    <th>Next execution</th>
+                                    <th>log</th>
+                                    <th>output</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    scheduledOk.map(elem => (
+                                        <tr key={'scheduledSuccess'}>
+                                            <td key={'schOk_jid' + elem.job_id}>{elem.job_id}</td>
+                                            <td key={'schOk_jn' + elem.job_id}>{elem.job_name}</td>
+                                            <td key={'schOk_par' + elem.job_id}>{elem.parameters}</td>
+                                            <td key={'schOk_int' + elem.job_id}>{elem.interval}</td>
+                                            <td key={'schOk_tu' + elem.job_id}>{elem.time_unit}</td>
+                                            <td key={'schOk_ne' + elem.job_id}>{new Date(elem.next_execution).toLocaleString()}</td>
+                                            <td key={'schOk_log' + elem.job_id}>{elem.log}</td>
+                                            <td key={'schOk_out' + elem.job_id}>{elem.output}</td>
+                                            <td key={'schOk_date' + elem.job_id}>{elem.datetime}</td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </Table>
                     </Tab>
                     <Tab eventKey="failed" title="Failed" disabled={this.state.show_history}>
-                        <div>TExt 3</div>
+                        <Table striped bordered hover className='mt-5' size="sm">
+                            <thead>
+                                <tr>
+                                    <th>Job ID</th>
+                                    <th>Job Name</th>
+                                    <th>Parameters</th>
+                                    <th>Interval</th>
+                                    <th>Time unit</th>
+                                    <th>Next execution</th>
+                                    <th>log</th>
+                                    <th>output</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    scheduledFailed.map(elem => (
+                                        <tr key={'scheduledFailed'}>
+                                            <td key={'schFailed_jid' + elem.job_id}>{elem.job_id}</td>
+                                            <td key={'schFailed_jn' + elem.job_id}>{elem.job_name}</td>
+                                            <td key={'schFailed_par' + elem.job_id}>{elem.parameters}</td>
+                                            <td key={'schFailed_int' + elem.job_id}>{elem.interval}</td>
+                                            <td key={'schFailed_tu' + elem.job_id}>{elem.time_unit}</td>
+                                            <td key={'schFailed_ne' + elem.job_id}>{new Date(elem.next_execution).toLocaleString()}</td>
+                                            <td key={'schFailed_log' + elem.job_id}>{elem.log}</td>
+                                            <td key={'schFailed_out' + elem.job_id}>{elem.output}</td>
+                                            <td key={'schFailed_date' + elem.job_id}>{elem.datetime}</td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </Table>
                     </Tab>
                 </Tabs>
 
