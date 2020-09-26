@@ -12,8 +12,8 @@ class Entrance extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            home: false,
-            scheduler: true,
+            home: true,
+            scheduler: false,
             launcher: false
         };
     }
