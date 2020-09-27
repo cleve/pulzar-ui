@@ -7,10 +7,10 @@ WORKDIR /app
 # install app dependencies
 COPY package.json /app
 COPY package-lock.json /app
-RUN yarn install
+RUN npm install
 
 # add app
 COPY . /app
 
 # start app
-CMD ["yarn", "run", "start"]
+CMD ["yarn", "start"]

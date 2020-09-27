@@ -81,7 +81,7 @@ class Scheduler extends React.Component {
                             <Table striped bordered hover className='mt-5' size="sm">
                                 <thead>
                                     <tr>
-                                        <th>Job ID</th>
+                                        <th>Job</th>
                                         <th>Job Name</th>
                                         <th>Parameters</th>
                                         <th>Interval</th>
@@ -113,7 +113,7 @@ class Scheduler extends React.Component {
                         <Table striped bordered hover className='mt-5' size="sm">
                             <thead>
                                 <tr>
-                                    <th>Job ID</th>
+                                    <th>Job</th>
                                     <th>Job Name</th>
                                     <th>Parameters</th>
                                     <th>Interval</th>
@@ -147,7 +147,7 @@ class Scheduler extends React.Component {
                         <Table striped bordered hover className='mt-5' size="sm">
                             <thead>
                                 <tr>
-                                    <th>Job ID</th>
+                                    <th>Job</th>
                                     <th>Job Name</th>
                                     <th>Parameters</th>
                                     <th>Interval</th>
