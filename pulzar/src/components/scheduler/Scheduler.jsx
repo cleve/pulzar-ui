@@ -3,9 +3,8 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import Badge from 'react-bootstrap/Badge';
-import Card from 'react-bootstrap/Card';
 import axios from 'axios';
+import Constants from '../../ utils/Constants'
 
 
 class Scheduler extends React.Component {
@@ -19,10 +18,7 @@ class Scheduler extends React.Component {
             failed_jobs: [],
             show_history: false
         };
-    }
-
-    getJobs = () => {
-
+        this.constants = new Constants();
     }
 
     showScheduledJobs = () => {
@@ -33,7 +29,7 @@ class Scheduler extends React.Component {
 
     componentDidMount() {
         const self = this;
-        axios.get('http://127.0.0.1:31414/admin/scheduled_jobs')
+        axios.get(this.constants.SCHEDULED_JOBS)
             .then(res => {
                 if (res.data) {
                     self.setState({
@@ -41,7 +37,7 @@ class Scheduler extends React.Component {
                     });
                 }
             });
-        axios.get('http://127.0.0.1:31414/admin/scheduled_jobs/ok?limit=100')
+        axios.get(this.constants.SCHEDULED_JOBS + '/ok?limit=100')
             .then(res => {
                 if (res.data) {
                     self.setState({
@@ -49,7 +45,7 @@ class Scheduler extends React.Component {
                     });
                 }
             })
-        axios.get('http://127.0.0.1:31414/admin/scheduled_jobs/failed?limit=100')
+        axios.get(this.constants.SCHEDULED_JOBS + '/failed?limit=100')
             .then(res => {
                 if (res.data) {
                     self.setState({
@@ -62,7 +58,7 @@ class Scheduler extends React.Component {
     loadJobHistory(jobId) {
         const self = this;
         this.setState({ show_history: true });
-        axios.get('http://127.0.0.1:31414/admin/scheduled_jobs/' + jobId + '?limit=100')
+        axios.get(this.constants.SCHEDULED_JOBS + '/' + jobId + '?limit=100')
             .then(res => {
                 if (res.data) {
                     self.setState({

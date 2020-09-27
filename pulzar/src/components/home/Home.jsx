@@ -4,13 +4,14 @@ import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
-import Container from 'react-bootstrap/Container';
 import axios from 'axios';
+import Constants from '../../ utils/Constants'
 
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
+        this.constants = new Constants();
         this.state = {
             network_status: []
         };
@@ -18,7 +19,7 @@ class Home extends React.Component {
 
     componentDidMount() {
         const self = this;
-        axios.get('http://127.0.0.1:31414/admin/network')
+        axios.get(this.constants.NETWORK)
             .then(res => {
                 if (res.data) {
                     self.setState({
