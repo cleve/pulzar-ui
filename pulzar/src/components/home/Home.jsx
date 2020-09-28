@@ -38,7 +38,7 @@ class Home extends React.Component {
                         <Card.Header>Network status</Card.Header>
                         <ListGroup variant="flush">
                             {network_status.map((item, index) => {
-                                return <ListGroup.Item>{item.node}<Badge className="ml-2" variant={item.synch ? "success" : "danger"}>{item.synch ? "online" : "offline"}</Badge></ListGroup.Item>
+                                return <ListGroup.Item key={index}>{item.node}<Badge className="ml-2" variant={item.synch ? "success" : "danger"}>{item.synch ? "online" : "offline"}</Badge></ListGroup.Item>
                             })}
                         </ListGroup>
                     </Card>
@@ -46,7 +46,7 @@ class Home extends React.Component {
                         <Card.Header>Network load</Card.Header>
                         <ListGroup variant="flush">
                             {network_status.map((item, index) => {
-                                return <ListGroup.Item>{item.node}: {item.load}%</ListGroup.Item>
+                                return <ListGroup.Item key={index}>{item.node}: {item.load}%</ListGroup.Item>
                             })}
                         </ListGroup>
                     </Card>
@@ -56,7 +56,7 @@ class Home extends React.Component {
                         <Card.Header>Disk space</Card.Header>
                         <ListGroup variant="flush">
                             {network_status.map((item, index) => {
-                                return <ListGroup.Item>{item.node}: {item.percent}%</ListGroup.Item>
+                                return <ListGroup.Item key={index}>{item.node}: {item.percent}%</ListGroup.Item>
                             })}
                         </ListGroup>
                     </Card>
