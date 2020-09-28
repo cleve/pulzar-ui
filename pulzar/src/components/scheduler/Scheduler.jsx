@@ -4,7 +4,8 @@ import Tabs from 'react-bootstrap/Tabs';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import Constants from '../../ utils/Constants'
+import Constants from '../../ utils/Constants';
+import Modal from 'react-bootstrap/Modal';
 
 
 class Scheduler extends React.Component {
@@ -16,7 +17,9 @@ class Scheduler extends React.Component {
             failed_scheduled_jobs: [],
             scheduled_executions: [],
             failed_jobs: [],
-            show_history: false
+            show_history: false,
+            logDetails: false,
+            logContent: ''
         };
         this.constants = new Constants();
     }
@@ -73,6 +76,8 @@ class Scheduler extends React.Component {
         const scheduled_history = this.state.scheduled_executions;
         const scheduledOk = this.state.ok_scheduled_jobs;
         const scheduledFailed = this.state.failed_scheduled_jobs;
+        const showLogDetail = this.state.logDetails;
+        const logContent = this.state.logContent;
         return (
             <div>
                 <Tabs transition={false} defaultActiveKey="scheduled" id="scheduled-tab">
@@ -134,8 +139,8 @@ class Scheduler extends React.Component {
                                             <td key={'schOk_int' + elem.job_id}>{elem.interval}</td>
                                             <td key={'schOk_tu' + elem.job_id}>{elem.time_unit}</td>
                                             <td key={'schOk_ne' + elem.job_id}>{new Date(elem.next_execution).toLocaleString()}</td>
-                                            <td key={'schOk_log' + elem.job_id}>{elem.log}</td>
-                                            <td key={'schOk_out' + elem.job_id}>{elem.output}</td>
+                                            <td key={'schOk_log' + elem.job_id}><Button size="sm" onClick={() => { this.setState({ logContent: elem.log, logDetails: true }) }} variant="outline-info">Show</Button></td>
+                                            <td key={'schOk_out' + elem.job_id}><Button size="sm" onClick={() => { this.setState({ logContent: elem.output, logDetails: true }) }} variant="outline-info">Show</Button></td>
                                             <td key={'schOk_date' + elem.job_id}>{elem.datetime}</td>
                                         </tr>
                                     ))
@@ -168,8 +173,8 @@ class Scheduler extends React.Component {
                                             <td key={'schFailed_int' + elem.job_id}>{elem.interval}</td>
                                             <td key={'schFailed_tu' + elem.job_id}>{elem.time_unit}</td>
                                             <td key={'schFailed_ne' + elem.job_id}>{new Date(elem.next_execution).toLocaleString()}</td>
-                                            <td key={'schFailed_log' + elem.job_id}>{elem.log}</td>
-                                            <td key={'schFailed_out' + elem.job_id}>{elem.output}</td>
+                                            <td key={'schFailed_log' + elem.job_id}><Button size="sm" onClick={() => { this.setState({ logContent: elem.log, logDetails: true }) }} variant="outline-info">Show</Button></td>
+                                            <td key={'schFailed_out' + elem.job_id}><Button size="sm" onClick={() => { this.setState({ logContent: elem.output, logDetails: true }) }} variant="outline-info">Show</Button></td>
                                             <td key={'schFailed_date' + elem.job_id}>{elem.datetime}</td>
                                         </tr>
                                     ))
@@ -198,8 +203,8 @@ class Scheduler extends React.Component {
                                     scheduled_history.map((elem, index) => (
                                         <tr key={index}>
                                             <td>{elem.state}</td>
-                                            <td>{elem.log}</td>
-                                            <td>{elem.output}</td>
+                                            <td><Button size="sm" onClick={() => { this.setState({ logContent: elem.log, logDetails: true }) }} variant="outline-info">Show</Button></td>
+                                            <td><Button size="sm" onClick={() => { this.setState({ logContent: elem.output, logDetails: true }) }} variant="outline-info">Show</Button></td>
                                             <td>{new Date(elem.datetime).toLocaleString()}</td>
                                         </tr>
                                     ))
@@ -207,6 +212,22 @@ class Scheduler extends React.Component {
                             </tbody>
                         </Table>
                     </div> : null}
+
+                <Modal
+                    size="lg"
+                    show={showLogDetail}
+                    animation={false}
+                    onHide={() => { this.setState({ logDetails: false }) }}
+                    aria-labelledby="modal-logs-lg"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title id="modal-logs-lg">
+                            Job details
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>{logContent}</Modal.Body>
+                </Modal>
+
             </div>
 
         );
