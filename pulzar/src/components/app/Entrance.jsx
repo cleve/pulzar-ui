@@ -7,6 +7,7 @@ import Nav from 'react-bootstrap/Nav';
 import Scheduler from '../scheduler/Scheduler';
 import Launcher from '../launcher/Launcher';
 import Home from '../home/Home';
+import Searcher from '../database/Searcher';
 
 class Entrance extends React.Component {
     constructor(props) {
@@ -14,7 +15,8 @@ class Entrance extends React.Component {
         this.state = {
             home: true,
             scheduler: false,
-            launcher: false
+            launcher: false,
+            database: false
         };
     }
 
@@ -24,21 +26,32 @@ class Entrance extends React.Component {
                 this.setState({
                     home: true,
                     scheduler: false,
-                    launcher: false
+                    launcher: false,
+                    database: false
                 });
                 break;
             case 1:
                 this.setState({
                     home: false,
                     scheduler: true,
-                    launcher: false
+                    launcher: false,
+                    database: false
                 });
                 break;
             case 2:
                 this.setState({
                     home: false,
                     scheduler: false,
-                    launcher: true
+                    launcher: true,
+                    database: false
+                });
+                break;
+            case 3:
+                this.setState({
+                    home: false,
+                    scheduler: false,
+                    launcher: false,
+                    database: true
                 });
                 break;
             default:
@@ -54,6 +67,7 @@ class Entrance extends React.Component {
         const homePage = this.state.home;
         const schedulerPage = this.state.scheduler;
         const launcherPage = this.state.launcher;
+        const databasePage = this.state.database;
         return (
             <Container fluid>
                 <Navbar bg="light">
@@ -64,14 +78,16 @@ class Entrance extends React.Component {
                             <Nav.Link href="#" onClick={() => this.activeNav(0)} active={homePage}>Home</Nav.Link>
                             <Nav.Link href="#" onClick={() => this.activeNav(1)} active={schedulerPage}>Scheduler</Nav.Link>
                             <Nav.Link href="#" onClick={() => this.activeNav(2)} active={launcherPage}>Launcher</Nav.Link>
+                            <Nav.Link href="#" onClick={() => this.activeNav(3)} active={databasePage}>Database</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
                 <Row className='mt-5'>
                     <Col>
+                        {homePage ? <Home /> : null}
                         {schedulerPage ? <Scheduler /> : null}
                         {launcherPage ? <Launcher /> : null}
-                        {homePage ? <Home /> : null}
+                        {databasePage ? <Searcher /> : null}
                     </Col>
                 </Row>
             </Container>
