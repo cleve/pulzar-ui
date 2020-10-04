@@ -10,6 +10,8 @@ import Table from 'react-bootstrap/Table';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
 import axios from 'axios';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import Constants from '../../ utils/Constants'
 
 
@@ -17,17 +19,29 @@ class Searcher extends React.Component {
     constructor(props) {
         super(props);
         this.constants = new Constants();
+        let startDate = new Date();
+        startDate.setMonth(startDate.getMonth() - 1);
         this.state = {
             showResults: false,
             searching: false,
             wordToSearch: '',
             limitValue: 100,
+            startDate: startDate,
+            endDate: new Date(),
             queryResponse: []
         };
 
         this.searchValue = this.searchValue.bind(this);
         this.updateSearchValue = this.updateSearchValue.bind(this);
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
+    }
+
+    getFormattedDate = (date) => {
+        let year = date.getFullYear();
+        let month = (1 + date.getMonth()).toString().padStart(2, '0');
+        let day = date.getDate().toString().padStart(2, '0');
+
+        return month + '-' + day + '-' + year;
     }
 
     handleDropdownChange = (value) => {
@@ -43,11 +57,13 @@ class Searcher extends React.Component {
     searchValue = () => {
         const self = this;
         const word = self.state.wordToSearch;
+        const startDate = this.getFormattedDate(self.state.startDate);
+        const endDate = this.getFormattedDate(self.state.endDate);
         if (word === '' || word.length === 0) {
             return
         }
         const limit = self.state.limitValue;
-        const query = this.constants.SEARCH_DB + word + '?limit=' + limit;
+        const query = this.constants.SEARCH_DB + word + '?limit=' + limit + '&gt=' + startDate + '&lt=' + endDate;
         axios.get(query)
             .then(res => {
                 if (res.data) {
@@ -64,6 +80,8 @@ class Searcher extends React.Component {
         const showDatabaseResults = this.state.showResults;
         const searchingIndicator = this.state.searching;
         const searchResponse = this.state.queryResponse;
+        const startDate = this.state.startDate;
+        const endDate = this.state.endDate;
         return (
             <div>
                 <Row>
@@ -76,6 +94,12 @@ class Searcher extends React.Component {
                                     <Row>
                                         <Col>
                                             <Form.Control value={this.state.wordToSearch} onChange={e => this.updateSearchValue(e.target.value)} placeholder="Key words" />
+                                        </Col>
+                                        <Col>
+                                            <DatePicker className="form-control" selected={startDate} onChange={date => this.setState({ startDate: date })} />
+                                        </Col>
+                                        <Col>
+                                            <DatePicker className="form-control" minDate={startDate} selected={endDate} onChange={date => this.setState({ endDate: date })} />
                                         </Col>
                                         <Col>
                                             <Form.Control as="select" defaultValue="Choose..." onChange={(e) => this.handleDropdownChange(e.target.value)}>
