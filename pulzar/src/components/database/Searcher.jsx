@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 import Spinner from 'react-bootstrap/Spinner';
-import CardDeck from 'react-bootstrap/CardDeck';
+import Alert from 'react-bootstrap/Alert';
 import axios from 'axios';
 import Constants from '../../ utils/Constants'
 
@@ -21,7 +21,8 @@ class Searcher extends React.Component {
             showResults: false,
             searching: false,
             wordToSearch: '',
-            limitValue: 100
+            limitValue: 100,
+            queryResponse: []
         };
 
         this.searchValue = this.searchValue.bind(this);
@@ -42,22 +43,27 @@ class Searcher extends React.Component {
     searchValue = () => {
         const self = this;
         const word = self.state.wordToSearch;
+        if (word === '' || word.length === 0) {
+            return
+        }
         const limit = self.state.limitValue;
-        /*
-        axios.get(this.constants.NETWORK)
+        const query = this.constants.SEARCH_DB + word + '?limit=' + limit;
+        axios.get(query)
             .then(res => {
                 if (res.data) {
+                    console.log(res.data);
                     self.setState({
-                        network_status: res.data.data
+                        queryResponse: res.data.data,
+                        showResults: true
                     });
                 }
             });
-        */
     }
 
     render() {
         const showDatabaseResults = this.state.showResults;
         const searchingIndicator = this.state.searching;
+        const searchResponse = this.state.queryResponse;
         return (
             <div>
                 <Row>
@@ -97,29 +103,32 @@ class Searcher extends React.Component {
                                 </Form>
                                 {
                                     showDatabaseResults ?
-                                        <Table striped bordered hover size="sm" className="mt-5">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Key found</th>
-                                                    <th>Location</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Mark</td>
-                                                    <td>@mdo</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Jacob</td>
-                                                    <td>Thornton</td>
-                                                </tr>
-                                            </tbody>
-                                        </Table> : null
-                                }
-
+                                        <div>
+                                            {searchResponse.length == 0 ?
+                                                <Alert key="search-report" variant="light">
+                                                    No records were founds
+                                                </Alert> : null}
+                                            <Table striped bordered hover size="sm" className="mt-5">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Key found</th>
+                                                        <th>Location</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        searchResponse.map((elem, index) => (
+                                                            <tr key={index}>
+                                                                <td key={'srch_id' + index}>{index + 1}</td>
+                                                                <td key={'srch_key' + index}>{elem.key}</td>
+                                                                <td key={'srch_url' + index}>{elem.url}</td>
+                                                            </tr>
+                                                        ))
+                                                    }
+                                                </tbody>
+                                            </Table>
+                                        </div> : null}
                             </Card.Body>
                         </Card>
                     </Col>
