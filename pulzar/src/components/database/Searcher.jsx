@@ -64,10 +64,10 @@ class Searcher extends React.Component {
         }
         const limit = self.state.limitValue;
         const query = this.constants.SEARCH_DB + word + '?limit=' + limit + '&gt=' + startDate + '&lt=' + endDate;
+        console.log(query);
         axios.get(query)
             .then(res => {
                 if (res.data) {
-                    console.log(res.data);
                     self.setState({
                         queryResponse: res.data.data,
                         showResults: true
