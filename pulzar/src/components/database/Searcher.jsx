@@ -101,34 +101,33 @@ class Searcher extends React.Component {
                                         </Col>
                                     </Row>
                                 </Form>
-                                {
-                                    showDatabaseResults ?
-                                        <div>
-                                            {searchResponse.length == 0 ?
-                                                <Alert key="search-report" variant="light">
-                                                    No records were founds
+                                <div>
+                                    {searchResponse.length == 0 ?
+                                        <Alert key="search-report" variant="light">
+                                            No records were founds
                                                 </Alert> : null}
-                                            <Table striped bordered hover size="sm" className="mt-5">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Key found</th>
-                                                        <th>Location</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        searchResponse.map((elem, index) => (
-                                                            <tr key={index}>
-                                                                <td key={'srch_id' + index}>{index + 1}</td>
-                                                                <td key={'srch_key' + index}>{elem.key}</td>
-                                                                <td key={'srch_url' + index}>{elem.url}</td>
-                                                            </tr>
-                                                        ))
-                                                    }
-                                                </tbody>
-                                            </Table>
-                                        </div> : null}
+                                    {(showDatabaseResults && searchResponse.length > 0) ?
+                                        <Table striped bordered hover size="sm" className="mt-5">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Key found</th>
+                                                    <th>Location</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    searchResponse.map((elem, index) => (
+                                                        <tr key={index}>
+                                                            <td key={'srch_id' + index}>{index + 1}</td>
+                                                            <td key={'srch_key' + index}>{elem.key}</td>
+                                                            <td key={'srch_url' + index}>{elem.url}</td>
+                                                        </tr>
+                                                    ))
+                                                }
+                                            </tbody>
+                                        </Table> : null}
+                                </div>
                             </Card.Body>
                         </Card>
                     </Col>
