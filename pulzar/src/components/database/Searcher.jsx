@@ -34,6 +34,13 @@ class Searcher extends React.Component {
         this.searchValue = this.searchValue.bind(this);
         this.updateSearchValue = this.updateSearchValue.bind(this);
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
+        this.onKeyUp = this.onKeyUp.bind(this);
+    }
+
+    onKeyUp = (event) => {
+        if (event.charCode === 13) {
+            this.searchValue();
+        }
     }
 
     getFormattedDate = (date) => {
@@ -93,7 +100,7 @@ class Searcher extends React.Component {
                                 <Form>
                                     <Row>
                                         <Col>
-                                            <Form.Control value={this.state.wordToSearch} onChange={e => this.updateSearchValue(e.target.value)} placeholder="Key words" />
+                                            <Form.Control onKeyPress={this.onKeyUp} value={this.state.wordToSearch} onChange={e => this.updateSearchValue(e.target.value)} placeholder="Key words" />
                                         </Col>
                                         <Col>
                                             <DatePicker className="form-control" selected={startDate} onChange={date => this.setState({ startDate: date })} />
