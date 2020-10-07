@@ -69,7 +69,7 @@ class Entrance extends React.Component {
         const launcherPage = this.state.launcher;
         const databasePage = this.state.database;
         return (
-            <Container fluid>
+            <div>
                 <Navbar bg="light">
                     <Navbar.Brand href="#">Pulzar</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -82,15 +82,17 @@ class Entrance extends React.Component {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-                <Row className='mt-5'>
-                    <Col>
-                        {homePage ? <Home /> : null}
-                        {schedulerPage ? <Scheduler /> : null}
-                        {launcherPage ? <Launcher /> : null}
-                        {databasePage ? <Searcher /> : null}
-                    </Col>
-                </Row>
-            </Container>
+                <Container fluid>
+                    <Row className='mt-5'>
+                        <Col>
+                            {homePage ? <Home /> : null}
+                            {schedulerPage ? <Scheduler /> : null}
+                            {launcherPage ? <Launcher /> : null}
+                            {databasePage ? <Searcher /> : null}
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
         )
     }
 }
