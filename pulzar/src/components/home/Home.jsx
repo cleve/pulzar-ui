@@ -46,6 +46,7 @@ class Home extends React.Component {
                             })}
                         </ListGroup>
                     </Card>
+
                     <Card style={{ width: '18rem' }}>
                         <Card.Header>Work load</Card.Header>
                         <ListGroup variant="flush">
@@ -54,7 +55,6 @@ class Home extends React.Component {
                             })}
                         </ListGroup>
                     </Card>
-
 
                     <Card style={{ width: '18rem' }}>
                         <Card.Header>Disk space</Card.Header>
