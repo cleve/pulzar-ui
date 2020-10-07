@@ -3,6 +3,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import Badge from 'react-bootstrap/Badge';
 import axios from 'axios';
 import Constants from '../../ utils/Constants';
 import Modal from 'react-bootstrap/Modal';
@@ -108,7 +109,12 @@ class Scheduler extends React.Component {
                                                 <td key={'sch_tu' + elem.job_id}>{elem.time_unit}</td>
                                                 <td key={'sch_ne' + elem.job_id}>{new Date(elem.next_execution).toLocaleString()}</td>
                                                 <td key={'sch_bt' + elem.job_id}>
-                                                    <Button variant="outline-primary" onClick={() => this.loadJobHistory(elem.job_id)}>History</Button>
+                                                    {
+                                                        (elem.state === 'scheduled') ?
+                                                            <Button size="sm" variant="outline-primary" onClick={() => this.loadJobHistory(elem.job_id)}>
+                                                                History
+                                                            </Button>
+                                                            : <Badge variant="danger">Disabled</Badge>}
                                                 </td>
                                             </tr>
                                         ))
