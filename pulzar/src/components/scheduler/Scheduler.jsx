@@ -78,6 +78,8 @@ class Scheduler extends React.Component {
         const scheduledFailed = this.state.failed_scheduled_jobs;
         const showLogDetail = this.state.logDetails;
         const logContent = this.state.logContent;
+        const parsedLog = logContent.split('\n').map((item, index) => <p key={index}>{item}</p>);
+
         return (
             <div>
                 <Tabs transition={false} defaultActiveKey="scheduled" id="scheduled-tab">
@@ -225,7 +227,7 @@ class Scheduler extends React.Component {
                             Job details
                         </Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>{logContent}</Modal.Body>
+                    <Modal.Body>{parsedLog}</Modal.Body>
                 </Modal>
 
             </div>
