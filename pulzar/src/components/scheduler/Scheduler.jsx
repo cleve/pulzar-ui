@@ -79,7 +79,7 @@ class Scheduler extends React.Component {
         const scheduledFailed = this.state.failed_scheduled_jobs;
         const showLogDetail = this.state.logDetails;
         const logContent = this.state.logContent;
-        const parsedLog = logContent.split('\n').map((item, index) => <p key={index}>{item}</p>);
+        const parsedLog = logContent.split('\n').map((item, index) => <div key={index}>{item}</div>);
 
         return (
             <div>
