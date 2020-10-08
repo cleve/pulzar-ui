@@ -221,7 +221,7 @@ class Scheduler extends React.Component {
                         </Table>
                     </div> : null}
 
-                <Modal
+                <Modal scrollable={true}
                     size="lg"
                     show={showLogDetail}
                     animation={false}
@@ -235,7 +235,6 @@ class Scheduler extends React.Component {
                     </Modal.Header>
                     <Modal.Body>{parsedLog}</Modal.Body>
                 </Modal>
-
             </div>
 
         );
