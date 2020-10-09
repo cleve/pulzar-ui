@@ -6,6 +6,7 @@ import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
+import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import Constants from '../../ utils/Constants'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
@@ -15,7 +16,8 @@ class Launcher extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            catalog: []
+            catalog: [],
+            showModalLauncher: false
         };
         this.constants = new Constants();
     }
@@ -35,6 +37,7 @@ class Launcher extends React.Component {
 
 
     render() {
+        const showModalLauncher = this.state.showModalLauncher;
         const columns = [{
             dataField: 'path',
             text: 'Path'
@@ -55,7 +58,7 @@ class Launcher extends React.Component {
             isDummyField: true,
             text: 'Action',
             formatter: () => {
-                return (<Button size="sm" variant="outline-primary">Launch</Button>)
+                return (<Button onClick={() => { this.setState({ showModalLauncher: true }) }} size="sm" variant="outline-primary">Launch</Button>)
             }
         }];
         const catalogData = this.state.catalog;
@@ -81,6 +84,21 @@ class Launcher extends React.Component {
                         )
                     }
                 </ToolkitProvider>
+
+                <Modal scrollable={true}
+                    size="lg"
+                    show={showModalLauncher}
+                    animation={false}
+                    onHide={() => { this.setState({ showModalLauncher: false }) }}
+                    aria-labelledby="modal-logs-lg"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title id="modal-logs-lg">
+                            Launch Job
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body></Modal.Body>
+                </Modal>
             </div>
         )
     }
