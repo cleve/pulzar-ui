@@ -7,6 +7,7 @@ class Constants {
         this.SCHEDULED_JOBS = this.ADMIN + '/scheduled_jobs';
         this.NETWORK = this.ADMIN + '/network';
         this.SEARCH_DB = this.EXTENSION + '/search/';
+        this.JOB_CATALOG = this.ADMIN + '/job_catalog';
     }
 }
 
