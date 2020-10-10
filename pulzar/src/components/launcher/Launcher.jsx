@@ -4,6 +4,8 @@ import Tabs from 'react-bootstrap/Tabs';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import Button from 'react-bootstrap/Button';
+import { JSONViewer } from 'react-json-editor-viewer';
+import { JSONEditor } from 'react-json-editor-viewer';
 import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
@@ -17,7 +19,9 @@ class Launcher extends React.Component {
         super(props);
         this.state = {
             catalog: [],
-            showModalLauncher: false
+            currentArguments: null,
+            showModalLauncher: false,
+            jobDetails: null
         };
         this.constants = new Constants();
     }
@@ -35,8 +39,29 @@ class Launcher extends React.Component {
             });
     }
 
+    prepareLaunching = (jobDetails) => {
+        this.setState({
+            currentArguments: JSON.parse(jobDetails.args),
+            jobDetails: jobDetails,
+            showModalLauncher: true
+        });
+    }
+
+    launchJob = (launcherObject) => {
+        const self = this;
+        axios.get(this.constants.JOB_CATALOG)
+            .then(res => {
+                if (res.data) {
+                    console.log(res.data.data);
+                    self.setState({
+                        catalog: res.data.data
+                    });
+                }
+            });
+    }
 
     render() {
+        const jobDetails = this.state.jobDetails;
         const showModalLauncher = this.state.showModalLauncher;
         const columns = [{
             dataField: 'path',
@@ -57,12 +82,13 @@ class Launcher extends React.Component {
             dataField: 'action',
             isDummyField: true,
             text: 'Action',
-            formatter: () => {
-                return (<Button onClick={() => { this.setState({ showModalLauncher: true }) }} size="sm" variant="outline-primary">Launch</Button>)
+            formatter: (row, cell) => {
+                return (<Button onClick={(e) => { this.prepareLaunching(cell) }} size="sm" variant="outline-primary">Launch</Button>)
             }
         }];
         const catalogData = this.state.catalog;
         const { SearchBar } = Search;
+        console.log(this.state.currentArguments);
         return (
             <div>
 
@@ -78,6 +104,9 @@ class Launcher extends React.Component {
                                 <SearchBar {...props.searchProps} />
                                 <hr />
                                 <BootstrapTable
+                                    striped
+                                    hover
+                                    condensed
                                     {...props.baseProps}
                                 />
                             </div>
@@ -97,7 +126,25 @@ class Launcher extends React.Component {
                             Launch Job
                         </Modal.Title>
                     </Modal.Header>
-                    <Modal.Body></Modal.Body>
+                    <Modal.Body>
+                        <Card border="light">
+                            <Card.Body>
+                                <Card.Title>{jobDetails ? <h5>{jobDetails.path}</h5> : ""}</Card.Title>
+                                <Card.Subtitle className="mb-2 text-muted">{jobDetails ? jobDetails.description : ""}</Card.Subtitle>
+                                <Card.Text className="mt-5">
+                                    <JSONEditor
+                                        data={this.state.currentArguments}
+                                        collapsible
+
+                                    />
+                                    <Button className="mt-5" variant="primary" size="lg">
+                                        Launch Job
+                                    </Button>
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+
+                    </Modal.Body>
                 </Modal>
             </div>
         )
