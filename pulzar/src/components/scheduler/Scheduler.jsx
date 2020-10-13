@@ -131,7 +131,6 @@ class Scheduler extends React.Component {
                                     <th>Parameters</th>
                                     <th>Interval</th>
                                     <th>Time unit</th>
-                                    <th>Next execution</th>
                                     <th>log</th>
                                     <th>output</th>
                                     <th>Date</th>
@@ -146,7 +145,6 @@ class Scheduler extends React.Component {
                                             <td key={'schOk_par' + elem.job_id}>{elem.parameters}</td>
                                             <td key={'schOk_int' + elem.job_id}>{elem.interval}</td>
                                             <td key={'schOk_tu' + elem.job_id}>{elem.time_unit}</td>
-                                            <td key={'schOk_ne' + elem.job_id}>{new Date(elem.next_execution).toLocaleString()}</td>
                                             <td key={'schOk_log' + elem.job_id}><Button size="sm" onClick={() => { this.setState({ logContent: elem.log, logDetails: true }) }} variant="outline-info">Show</Button></td>
                                             <td key={'schOk_out' + elem.job_id}><Button size="sm" onClick={() => { this.setState({ logContent: elem.output, logDetails: true }) }} variant="outline-info">Show</Button></td>
                                             <td key={'schOk_date' + elem.job_id}>{elem.datetime}</td>
@@ -165,7 +163,6 @@ class Scheduler extends React.Component {
                                     <th>Parameters</th>
                                     <th>Interval</th>
                                     <th>Time unit</th>
-                                    <th>Next execution</th>
                                     <th>log</th>
                                     <th>output</th>
                                     <th>Date</th>
@@ -180,7 +177,6 @@ class Scheduler extends React.Component {
                                             <td key={'schFailed_par' + elem.job_id}>{elem.parameters}</td>
                                             <td key={'schFailed_int' + elem.job_id}>{elem.interval}</td>
                                             <td key={'schFailed_tu' + elem.job_id}>{elem.time_unit}</td>
-                                            <td key={'schFailed_ne' + elem.job_id}>{new Date(elem.next_execution).toLocaleString()}</td>
                                             <td key={'schFailed_log' + elem.job_id}><Button size="sm" onClick={() => { this.setState({ logContent: elem.log, logDetails: true }) }} variant="outline-info">Show</Button></td>
                                             <td key={'schFailed_out' + elem.job_id}><Button size="sm" onClick={() => { this.setState({ logContent: elem.output, logDetails: true }) }} variant="outline-info">Show</Button></td>
                                             <td key={'schFailed_date' + elem.job_id}>{elem.datetime}</td>
