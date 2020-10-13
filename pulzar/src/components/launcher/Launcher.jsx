@@ -20,6 +20,7 @@ class Launcher extends React.Component {
         super(props);
         this.state = {
             catalog: [],
+            showJson: true,
             currentArguments: null,
             showModalLauncher: false,
             jobDetails: null,
@@ -45,7 +46,6 @@ class Launcher extends React.Component {
         axios.get(this.constants.JOB_CATALOG)
             .then(res => {
                 if (res.data) {
-                    console.log(res.data.data);
                     self.setState({
                         catalog: res.data.data
                     });
@@ -53,11 +53,21 @@ class Launcher extends React.Component {
             });
     }
 
+    jsonString = (jString) => {
+        try {
+            return JSON.parse(jString);
+        } catch (e) {
+            return null;
+        }
+    }
+
     prepareLaunching = (jobDetails) => {
         const self = this;
+        let jsonString = this.jsonString(jobDetails.args);
         this.setState({
+            showJson: (jsonString !== null) ? true : false,
             showJobAlert: false,
-            currentArguments: JSON.parse(jobDetails.args),
+            currentArguments: jsonString,
             jobDetails: jobDetails,
             showModalLauncher: true
         });
@@ -68,8 +78,10 @@ class Launcher extends React.Component {
             showJobLoader: true
         });
         const url = this.constants.JOB_LAUNCHER + this.state.jobDetails.path
-        const args = this.state.currentArguments;
-        console.log(url, args);
+        let args = this.state.currentArguments;
+        if (args === null) {
+            args = { job: 'no args' }
+        }
         // Request
         axios.post(url, args)
             .then(res => {
@@ -132,6 +144,7 @@ class Launcher extends React.Component {
         const jobLaunchedOk = this.state.jobLaunchedCorrectly;
         const jobMessageLaunched = this.state.jobMessageLaunched;
         const showJobAlert = this.state.showJobAlert;
+        const showJson = this.state.showJson;
         return (
             <div>
 
@@ -178,11 +191,12 @@ class Launcher extends React.Component {
                                 <Card.Title>{jobDetails ? <h5>{jobDetails.path}</h5> : ""}</Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">{jobDetails ? jobDetails.description : ""}</Card.Subtitle>
                                 <Card.Text className="mt-5">
-                                    <JSONEditor
+                                    {showJson ? <JSONEditor
                                         data={this.state.currentArguments}
                                         collapsible
                                         onChange={this.onJsonChange}
-                                    />
+                                    /> : null}
+
                                     <Button disabled={showJobAlert} onClick={this.launchJob} className="mt-5" variant="primary" size="lg">
                                         {showJobLoader ? <div>
                                             <Spinner
