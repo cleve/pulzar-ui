@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Scheduler from '../scheduler/Scheduler';
 import Launcher from '../launcher/Launcher';
+import LaunchedJobs from '../launcher/LaunchedJobs';
 import Home from '../home/Home';
 import Searcher from '../database/Searcher';
 
@@ -16,6 +17,7 @@ class Entrance extends React.Component {
             home: true,
             scheduler: false,
             launcher: false,
+            lauchedJobs: false,
             database: false
         };
     }
@@ -27,6 +29,7 @@ class Entrance extends React.Component {
                     home: true,
                     scheduler: false,
                     launcher: false,
+                    launchedJobs: false,
                     database: false
                 });
                 break;
@@ -35,6 +38,7 @@ class Entrance extends React.Component {
                     home: false,
                     scheduler: true,
                     launcher: false,
+                    launchedJobs: false,
                     database: false
                 });
                 break;
@@ -43,6 +47,7 @@ class Entrance extends React.Component {
                     home: false,
                     scheduler: false,
                     launcher: true,
+                    launchedJobs: false,
                     database: false
                 });
                 break;
@@ -51,6 +56,16 @@ class Entrance extends React.Component {
                     home: false,
                     scheduler: false,
                     launcher: false,
+                    launchedJobs: true,
+                    database: false
+                });
+                break;
+            case 4:
+                this.setState({
+                    home: false,
+                    scheduler: false,
+                    launcher: false,
+                    launchedJobs: false,
                     database: true
                 });
                 break;
@@ -58,7 +73,8 @@ class Entrance extends React.Component {
                 this.setState({
                     home: false,
                     scheduler: false,
-                    launcher: false
+                    launcher: false,
+                    launchedJobs: false,
                 });
         }
     }
@@ -67,6 +83,7 @@ class Entrance extends React.Component {
         const homePage = this.state.home;
         const schedulerPage = this.state.scheduler;
         const launcherPage = this.state.launcher;
+        const launchedJobs = this.state.launchedJobs;
         const databasePage = this.state.database;
         return (
             <div>
@@ -78,7 +95,8 @@ class Entrance extends React.Component {
                             <Nav.Link href="#" onClick={() => this.activeNav(0)} active={homePage}>Home</Nav.Link>
                             <Nav.Link href="#" onClick={() => this.activeNav(1)} active={schedulerPage}>Scheduler</Nav.Link>
                             <Nav.Link href="#" onClick={() => this.activeNav(2)} active={launcherPage}>Launcher</Nav.Link>
-                            <Nav.Link href="#" onClick={() => this.activeNav(3)} active={databasePage}>Database</Nav.Link>
+                            <Nav.Link href="#" onClick={() => this.activeNav(3)} active={launcherPage}>Launched Jobs</Nav.Link>
+                            <Nav.Link href="#" onClick={() => this.activeNav(4)} active={databasePage}>Database</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
@@ -89,6 +107,7 @@ class Entrance extends React.Component {
                             {schedulerPage ? <Scheduler /> : null}
                             {launcherPage ? <Launcher /> : null}
                             {databasePage ? <Searcher /> : null}
+                            {launchedJobs ? <LaunchedJobs /> : null}
                         </Col>
                     </Row>
                 </Container>
