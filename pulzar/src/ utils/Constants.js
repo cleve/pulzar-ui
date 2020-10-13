@@ -8,7 +8,7 @@ class Constants {
         this.NETWORK = this.ADMIN + '/network';
         this.SEARCH_DB = this.EXTENSION + '/search/';
         this.JOB_CATALOG = this.ADMIN + '/job_catalog';
-        this.JOB_LAUNCHER = this.ADMIN + '/job';
+        this.JOB_LAUNCHER = this.BASE_URL + '/launch_job/';
     }
 }
 
