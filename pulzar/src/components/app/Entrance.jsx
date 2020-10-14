@@ -83,7 +83,7 @@ class Entrance extends React.Component {
         const homePage = this.state.home;
         const schedulerPage = this.state.scheduler;
         const launcherPage = this.state.launcher;
-        const launchedJobs = this.state.launchedJobs;
+        const launchedJobsPage = this.state.launchedJobs;
         const databasePage = this.state.database;
         return (
             <div>
@@ -95,7 +95,7 @@ class Entrance extends React.Component {
                             <Nav.Link href="#" onClick={() => this.activeNav(0)} active={homePage}>Home</Nav.Link>
                             <Nav.Link href="#" onClick={() => this.activeNav(1)} active={schedulerPage}>Scheduler</Nav.Link>
                             <Nav.Link href="#" onClick={() => this.activeNav(2)} active={launcherPage}>Launcher</Nav.Link>
-                            <Nav.Link href="#" onClick={() => this.activeNav(3)} active={launcherPage}>Launched Jobs</Nav.Link>
+                            <Nav.Link href="#" onClick={() => this.activeNav(3)} active={launchedJobsPage}>Launched Jobs</Nav.Link>
                             <Nav.Link href="#" onClick={() => this.activeNav(4)} active={databasePage}>Database</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
@@ -107,7 +107,7 @@ class Entrance extends React.Component {
                             {schedulerPage ? <Scheduler /> : null}
                             {launcherPage ? <Launcher /> : null}
                             {databasePage ? <Searcher /> : null}
-                            {launchedJobs ? <LaunchedJobs /> : null}
+                            {launchedJobsPage ? <LaunchedJobs /> : null}
                         </Col>
                     </Row>
                 </Container>
