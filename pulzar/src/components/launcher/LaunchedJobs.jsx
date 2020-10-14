@@ -52,7 +52,7 @@ class LaunchedJobs extends React.Component {
             jobStatus: jobStatus
         });
         // Getting details
-        let url = this.constants.JOB_DETAILS + "/" + jobId;
+        let url = this.constants.JOB_DETAILS + "/" + jobId + "?limit=200";
         axios.get(url)
             .then(res => {
                 if (res.data) {
