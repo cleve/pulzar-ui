@@ -1,11 +1,8 @@
 import React from 'react';
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
-import { JSONViewer } from 'react-json-editor-viewer';
 import { JSONEditor } from 'react-json-editor-viewer';
 import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
