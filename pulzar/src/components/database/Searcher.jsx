@@ -133,7 +133,7 @@ class Searcher extends React.Component {
                                     </Row>
                                 </Form>
                                 <div>
-                                    {searchResponse.length == 0 ?
+                                    {(searchResponse.length == 0 && showDatabaseResults) ?
                                         <Alert key="search-report" variant="light">
                                             No records were founds
                                                 </Alert> : null}
