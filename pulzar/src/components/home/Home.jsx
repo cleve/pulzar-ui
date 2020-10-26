@@ -16,9 +16,27 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.constants = new Constants();
+        this.interval = null;
         this.state = {
             network_status: []
         };
+    }
+
+    networkCheck = () => {
+        this.interval = setInterval(() => {
+            axios.get(this.constants.NETWORK)
+                .then(res => {
+                    if (res.data) {
+                        self.setState({
+                            network_status: res.data.data
+                        });
+                    }
+                });
+        }, 300000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     componentDidMount() {
@@ -31,6 +49,7 @@ class Home extends React.Component {
                     });
                 }
             });
+        this.networkCheck();
     }
 
     render() {
