@@ -23,6 +23,7 @@ class Home extends React.Component {
     }
 
     networkCheck = () => {
+        const self = this;
         this.interval = setInterval(() => {
             axios.get(this.constants.NETWORK)
                 .then(res => {
