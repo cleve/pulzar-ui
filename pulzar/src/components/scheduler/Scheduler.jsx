@@ -127,6 +127,7 @@ class Scheduler extends React.Component {
                             <thead>
                                 <tr>
                                     <th>Job</th>
+                                    <th>Execution</th>
                                     <th>Job Name</th>
                                     <th>Parameters</th>
                                     <th>Interval</th>
@@ -140,7 +141,8 @@ class Scheduler extends React.Component {
                                 {
                                     scheduledOk.map((elem, index) => (
                                         <tr key={index}>
-                                            <td key={'schOk_jid' + elem.job_id.toS}>{elem.job_id}</td>
+                                            <td key={'schOk_jid' + elem.job_id}>{elem.job_id}</td>
+                                            <td key={'schOk_exec_id' + elem.exec_id}>{elem.exec_id}</td>
                                             <td key={'schOk_jn' + elem.job_id}>{elem.job_name}</td>
                                             <td key={'schOk_par' + elem.job_id}>{elem.parameters}</td>
                                             <td key={'schOk_int' + elem.job_id}>{elem.interval}</td>
@@ -159,6 +161,7 @@ class Scheduler extends React.Component {
                             <thead>
                                 <tr>
                                     <th>Job</th>
+                                    <th>Execution</th>
                                     <th>Job Name</th>
                                     <th>Parameters</th>
                                     <th>Interval</th>
@@ -173,6 +176,7 @@ class Scheduler extends React.Component {
                                     scheduledFailed.map((elem, index) => (
                                         <tr key={index}>
                                             <td key={'schFailed_jid' + elem.job_id}>{elem.job_id}</td>
+                                            <td key={'schOk_exec_id' + elem.exec_id}>{elem.exec_id}</td>
                                             <td key={'schFailed_jn' + elem.job_id}>{elem.job_name}</td>
                                             <td key={'schFailed_par' + elem.job_id}>{elem.parameters}</td>
                                             <td key={'schFailed_int' + elem.job_id}>{elem.interval}</td>
@@ -196,17 +200,22 @@ class Scheduler extends React.Component {
                         <Table striped bordered hover size="sm">
                             <thead>
                                 <tr>
+                                    <th>Execution</th>
                                     <th>State</th>
                                     <th>Log</th>
                                     <th>Output</th>
-                                    <th>Execution</th>
+                                    <th>Execution date</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
                                     scheduled_history.map((elem, index) => (
                                         <tr key={index}>
-                                            <td>{elem.state}</td>
+                                            <td>{elem.exec_id}</td>
+                                            <td>{
+                                                (elem.state === 'ok') ?
+                                                    <Badge variant="success">Completed</Badge> : <Badge variant="danger">Failed</Badge>}
+                                            </td>
                                             <td><Button size="sm" onClick={() => { this.setState({ logContent: elem.log, logDetails: true }) }} variant="outline-info">Show</Button></td>
                                             <td><Button size="sm" onClick={() => { this.setState({ logContent: elem.output, logDetails: true }) }} variant="outline-info">Show</Button></td>
                                             <td>{new Date(elem.datetime).toLocaleString()}</td>
