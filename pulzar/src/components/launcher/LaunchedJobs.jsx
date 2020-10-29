@@ -46,6 +46,7 @@ class LaunchedJobs extends React.Component {
 
     openModal = (jobId, jobName, jobStatus) => {
         this.setState({
+            showModalLoader: true,
             jobId: jobId,
             jobName: jobName,
             showModal: true,
@@ -135,7 +136,12 @@ class LaunchedJobs extends React.Component {
                     size="lg"
                     show={showModal}
                     animation={false}
-                    onHide={() => { this.setState({ showModal: false }) }}
+                    onHide={() => {
+                        this.setState({
+                            showModal: false,
+                            jobDetails: null
+                        })
+                    }}
                     aria-labelledby="modal-logs-lg"
                 >
                     <Modal.Header closeButton>
