@@ -120,7 +120,10 @@ class Launcher extends React.Component {
             text: 'Description'
         }, {
             dataField: 'args',
-            text: 'Arguments'
+            text: 'Arguments',
+            formatter: (row, cell) => {
+                return (<div><pre>{cell.args}</pre></div>)
+            }
         }, {
             dataField: 'category',
             text: 'Category'
@@ -131,6 +134,9 @@ class Launcher extends React.Component {
             dataField: 'action',
             isDummyField: true,
             text: 'Action',
+            headerStyle: (column, colIndex) => {
+                return { width: '100px' };
+            },
             formatter: (row, cell) => {
                 return (<Button onClick={(e) => { this.prepareLaunching(cell) }} size="sm" variant="outline-primary">Launch</Button>)
             }

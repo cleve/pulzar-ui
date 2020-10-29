@@ -76,13 +76,12 @@ class LaunchedJobs extends React.Component {
         const columns = [{
             dataField: 'job_id',
             text: 'Job ID',
-
+            headerStyle: (column, colIndex) => {
+                return { width: '100px' };
+            },
         }, {
             dataField: 'job_name',
             text: 'Name'
-        }, {
-            dataField: 'parameters',
-            text: 'Parameters'
         }, {
             dataField: 'node',
             text: 'Executed in'
@@ -92,6 +91,9 @@ class LaunchedJobs extends React.Component {
         }, {
             dataField: 'status',
             text: 'State',
+            headerStyle: (column, colIndex) => {
+                return { width: '100px' };
+            },
             formatter: (cell, row) => {
                 if (cell === 'failed') {
                     return (<Badge variant="danger">Failed</Badge>)
@@ -105,6 +107,9 @@ class LaunchedJobs extends React.Component {
             dataField: 'action',
             isDummyField: true,
             text: 'Details',
+            headerStyle: (column, colIndex) => {
+                return { width: '80px' };
+            },
             formatter: (row, cell) => {
                 return (<Button onClick={(e) => this.openModal(cell.job_id, cell.job_name, cell.status)} size="sm" variant="outline-primary">View</Button>)
             }
