@@ -114,7 +114,10 @@ class Launcher extends React.Component {
         const showModalLauncher = this.state.showModalLauncher;
         const columns = [{
             dataField: 'path',
-            text: 'Path'
+            text: 'Path',
+            formatter: (row, cell) => {
+                return (<div><pre>{cell.path}</pre></div>)
+            }
         }, {
             dataField: 'description',
             text: 'Description'

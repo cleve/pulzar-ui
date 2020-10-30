@@ -151,8 +151,9 @@ class Searcher extends React.Component {
                                                     searchResponse.map((elem, index) => (
                                                         <tr key={index}>
                                                             <td key={'srch_id' + index}>{index + 1}</td>
-                                                            <td key={'srch_key' + index}>{elem.key}</td>
-                                                            <td key={'srch_url' + index}>{elem.url}</td>
+                                                            <td key={'srch_key' + index}><div><pre>{elem.key}</pre></div></td>
+                                                            <td width="110px" key={'srch_url' + index}>
+                                                                <Button variant="outline-primary" size="sm" href={elem.url}>Download</Button></td>
                                                         </tr>
                                                     ))
                                                 }
