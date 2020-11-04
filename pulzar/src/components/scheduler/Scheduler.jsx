@@ -149,7 +149,9 @@ class Scheduler extends React.Component {
                                             <td key={'schOk_tu' + elem.job_id}>{elem.time_unit}</td>
                                             <td key={'schOk_log' + elem.job_id}><Button size="sm" disabled={elem.log === null} onClick={() => { this.setState({ logContent: elem.log, logDetails: true }) }} variant="outline-info">Show</Button></td>
                                             <td key={'schOk_out' + elem.job_id}><Button size="sm" disabled={elem.output === null} onClick={() => { this.setState({ logContent: elem.output, logDetails: true }) }} variant="outline-info">Show</Button></td>
-                                            <td key={'schOk_date' + elem.job_id}>{elem.datetime}</td>
+                                            <td key={'schOk_date' + elem.job_id}>
+                                                {new Date(elem.datetime).toLocaleString()}
+                                            </td>
                                         </tr>
                                     ))
                                 }
@@ -183,7 +185,9 @@ class Scheduler extends React.Component {
                                             <td key={'schFailed_tu' + elem.job_id}>{elem.time_unit}</td>
                                             <td key={'schFailed_log' + elem.job_id}><Button size="sm" disabled={elem.log === null} onClick={() => { this.setState({ logContent: elem.log, logDetails: true }) }} variant="outline-info">Show</Button></td>
                                             <td key={'schFailed_out' + elem.job_id}><Button size="sm" disabled={elem.output === null} onClick={() => { this.setState({ logContent: elem.output, logDetails: true }) }} variant="outline-info">Show</Button></td>
-                                            <td key={'schFailed_date' + elem.job_id}>{elem.datetime}</td>
+                                            <td key={'schFailed_date' + elem.job_id}>
+                                                {new Date(elem.datetime).toLocaleString()}
+                                            </td>
                                         </tr>
                                     ))
                                 }
