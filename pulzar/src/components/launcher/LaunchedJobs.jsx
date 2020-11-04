@@ -72,6 +72,15 @@ class LaunchedJobs extends React.Component {
         const jobDetails = this.state.jobDetails;
         const jobName = this.state.jobName;
         const jobStatus = this.state.jobStatus;
+        let jobStatusIndicator = null;
+        if (jobStatus === "completed") {
+            jobStatusIndicator = <Badge className="ml-2" variant="success">Completed</Badge>
+        }
+        else if (jobStatus === "pending") {
+            jobStatusIndicator = <Badge className="ml-2" variant="info">Pending</Badge>
+        } else {
+            jobStatusIndicator = <Badge className="ml-2" variant="danger">Failed</Badge>
+        }
         const { SearchBar } = Search;
         const columns = [{
             dataField: 'job_id',
@@ -87,7 +96,10 @@ class LaunchedJobs extends React.Component {
             text: 'Executed in'
         }, {
             dataField: 'creation_time',
-            text: 'Date'
+            text: 'Date',
+            formatter: (cell, row) => {
+                return new Date(cell).toLocaleString()
+            }
         }, {
             dataField: 'status',
             text: 'State',
@@ -159,7 +171,7 @@ class LaunchedJobs extends React.Component {
                             <Card.Body>
                                 <Card.Title>
                                     {jobName}
-                                    {(jobStatus === "completed") ? <Badge className="ml-2" variant="success">Completed</Badge> : <Badge className="ml-2" variant="danger">Failed</Badge>}
+                                    {jobStatusIndicator}
                                 </Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">{(jobDetails !== null) ? "Duration: " + jobDetails.time + "(s)" : null}</Card.Subtitle>
                                 <Card.Text className="mt-5">
