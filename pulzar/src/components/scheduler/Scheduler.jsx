@@ -107,7 +107,7 @@ class Scheduler extends React.Component {
                                                 <td key={'sch_par' + elem.job_id}>{elem.parameters}</td>
                                                 <td key={'sch_int' + elem.job_id}>{elem.interval}</td>
                                                 <td key={'sch_tu' + elem.job_id}>{elem.time_unit}</td>
-                                                <td key={'sch_ne' + elem.job_id}>{new Date(elem.next_execution).toLocaleString()}</td>
+                                                <td key={'sch_ne' + elem.job_id}>{elem.next_execution != null ? new Date(elem.next_execution).toLocaleString() : "n/a"}</td>
                                                 <td key={'sch_bt' + elem.job_id}>
                                                     {
                                                         (elem.state === 'scheduled') ?
