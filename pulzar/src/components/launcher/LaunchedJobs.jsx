@@ -21,7 +21,8 @@ class LaunchedJobs extends React.Component {
             jobId: null,
             jobName: "",
             jobStatus: "",
-            jobDetails: null
+            jobDetails: null,
+            tickStatusJob: true
         };
         this.constants = new Constants();
 
@@ -36,6 +37,31 @@ class LaunchedJobs extends React.Component {
                     self.setState({
                         jobs: res.data.data
                     });
+                }
+            });
+        this.checkJobStatus();
+    }
+
+    checkJobStatus = () => {
+        const self = this;
+        if (!this.state.tickStatusJob) {
+            return;
+        }
+        let filteredJobs = [];
+        axios.get(this.constants.JOBS)
+            .then(res => {
+                if (res.data) {
+                    let allJobs = res.data.data
+                    filteredJobs = allJobs.filter((item) => item.status === "pending");
+                    if (filteredJobs.length === 0) {
+                        self.setState({ tickStatusJob: false });
+                    } else {
+                        const intervalId = setInterval(() => {
+                            // TODO: Query job status
+                            console.log("jobId status");
+                            clearInterval(intervalId);
+                        }, 10000);
+                    }
                 }
             });
     }
@@ -53,7 +79,7 @@ class LaunchedJobs extends React.Component {
             jobStatus: jobStatus
         });
         // Getting details
-        let url = this.constants.JOB_DETAILS + "/" + jobId + "?limit=200";
+        const url = this.constants.JOB_DETAILS + "/" + jobId + "?limit=200";
         axios.get(url)
             .then(res => {
                 if (res.data) {
