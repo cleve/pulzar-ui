@@ -25,7 +25,6 @@ class LaunchedJobs extends React.Component {
             tickStatusJob: true
         };
         this.constants = new Constants();
-
         this.openModal = this.openModal.bind(this);
     }
 
@@ -39,11 +38,13 @@ class LaunchedJobs extends React.Component {
                     });
                 }
             });
+        // For pendings.
         this.checkJobStatus();
     }
 
     checkJobStatus = () => {
         const self = this;
+        let intervalId = null;
         if (!this.state.tickStatusJob) {
             return;
         }
@@ -52,14 +53,37 @@ class LaunchedJobs extends React.Component {
             .then(res => {
                 if (res.data) {
                     let allJobs = res.data.data
+                    console.log(allJobs);
                     filteredJobs = allJobs.filter((item) => item.status === "pending");
                     if (filteredJobs.length === 0) {
                         self.setState({ tickStatusJob: false });
                     } else {
-                        const intervalId = setInterval(() => {
+                        intervalId = setInterval(() => {
                             // TODO: Query job status
-                            console.log("jobId status");
-                            clearInterval(intervalId);
+                            let finishedJobs = [];
+                            filteredJobs.forEach((elem) => {
+                                axios.get(this.constants.JOB_DETAILS + "/" + elem.job_id)
+                                    .then(res => {
+                                        if (res.data) {
+                                            let jobDetails = res.data.data;
+                                            console.log(jobDetails);
+                                            if (jobDetails.status === "finished") {
+                                                finishedJobs.push(elem.job_id);
+                                                console.log("update status in UI");
+                                            }
+                                        }
+                                    });
+                            });
+                            // Clean items.
+                            filteredJobs = filteredJobs.filter(item => {
+                                return !finishedJobs.includes(item.job_id);
+                            });
+                            if (filteredJobs.length === 0) {
+                                if (intervalId !== null) {
+                                    clearInterval(intervalId);
+                                }
+                            }
+
                         }, 10000);
                     }
                 }
