@@ -24,8 +24,16 @@ class LaunchedJobs extends React.Component {
             jobDetails: null,
             tickStatusJob: true
         };
+        this.tickForInterval = null;
         this.constants = new Constants();
         this.openModal = this.openModal.bind(this);
+    }
+
+    componentWillUnmount() {
+        // Clear interval.
+        if (this.tickForInterval !== null) {
+            clearInterval(this.tickForInterval);
+        }
     }
 
     componentDidMount() {
@@ -44,7 +52,6 @@ class LaunchedJobs extends React.Component {
 
     checkJobStatus = () => {
         const self = this;
-        let intervalId = null;
         if (!this.state.tickStatusJob) {
             return;
         }
@@ -52,24 +59,42 @@ class LaunchedJobs extends React.Component {
         axios.get(this.constants.JOBS)
             .then(res => {
                 if (res.data) {
-                    let allJobs = res.data.data
-                    console.log(allJobs);
+                    let allJobs = res.data.data;
                     filteredJobs = allJobs.filter((item) => item.status === "pending");
                     if (filteredJobs.length === 0) {
                         self.setState({ tickStatusJob: false });
                     } else {
-                        intervalId = setInterval(() => {
-                            // TODO: Query job status
+                        let updatedJobs = [];
+                        this.tickForInterval = setInterval(() => {
+                            allJobs = this.state.jobs;
+                            filteredJobs = allJobs.filter((item) => item.status === "pending");
+                            if (updatedJobs.length > 0) {
+                                console.log("Update UI");
+                                self.setState({
+                                    jobs: updatedJobs
+                                })
+                            }
+                            const currentJobs = this.state.jobs;
                             let finishedJobs = [];
                             filteredJobs.forEach((elem) => {
                                 axios.get(this.constants.JOB_DETAILS + "/" + elem.job_id)
                                     .then(res => {
                                         if (res.data) {
+                                            if (res.data.status === "ko") {
+                                                console.log("Error::" + res.data.msg);
+                                                return
+                                            }
                                             let jobDetails = res.data.data;
-                                            console.log(jobDetails);
-                                            if (jobDetails.status === "finished") {
+                                            if (jobDetails.status === "completed") {
                                                 finishedJobs.push(elem.job_id);
-                                                console.log("update status in UI");
+                                                updatedJobs = currentJobs.map(item => {
+                                                    if (finishedJobs.includes(item.job_id)) {
+                                                        item.status = "completed";
+                                                        return item;
+                                                    } else {
+                                                        return item;
+                                                    }
+                                                });
                                             }
                                         }
                                     });
@@ -79,8 +104,8 @@ class LaunchedJobs extends React.Component {
                                 return !finishedJobs.includes(item.job_id);
                             });
                             if (filteredJobs.length === 0) {
-                                if (intervalId !== null) {
-                                    clearInterval(intervalId);
+                                if (this.tickForInterval !== null) {
+                                    clearInterval(this.tickForInterval);
                                 }
                             }
 
