@@ -22,6 +22,7 @@ class Scheduler extends React.Component {
             logDetails: false,
             logContent: ''
         };
+        this.tickForCheckJobs = null;
         this.constants = new Constants();
     }
 
@@ -31,16 +32,8 @@ class Scheduler extends React.Component {
         })
     }
 
-    componentDidMount() {
+    updateSuccessfullAndFailed = () => {
         const self = this;
-        axios.get(this.constants.SCHEDULED_JOBS)
-            .then(res => {
-                if (res.data) {
-                    self.setState({
-                        scheduled_jobs: res.data.data
-                    });
-                }
-            });
         axios.get(this.constants.SCHEDULED_JOBS + '/ok?limit=100')
             .then(res => {
                 if (res.data) {
@@ -57,6 +50,29 @@ class Scheduler extends React.Component {
                     });
                 }
             })
+    }
+
+    componentWillUnmount() {
+        // Clear interval.
+        if (this.tickForCheckJobs !== null) {
+            clearInterval(this.tickForCheckJobs);
+        }
+    }
+
+    componentDidMount() {
+        const self = this;
+        axios.get(this.constants.SCHEDULED_JOBS)
+            .then(res => {
+                if (res.data) {
+                    self.setState({
+                        scheduled_jobs: res.data.data
+                    });
+                }
+            });
+        self.updateSuccessfullAndFailed();
+        this.tickForCheckJobs = setInterval(() => {
+            self.updateSuccessfullAndFailed();
+        }, 20000);
     }
 
     loadJobHistory(jobId) {
