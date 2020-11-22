@@ -77,7 +77,7 @@ class LaunchedJobs extends React.Component {
                             const currentJobs = this.state.jobs;
                             let finishedJobs = [];
                             filteredJobs.forEach((elem) => {
-                                axios.get(this.constants.JOB_DETAILS + "/" + elem.job_id)
+                                axios.get(this.constants.JOB_DETAILS + "/" + elem.job_id + "?filter=state")
                                     .then(res => {
                                         if (res.data) {
                                             if (res.data.status === "ko") {
