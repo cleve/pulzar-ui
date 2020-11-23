@@ -95,6 +95,16 @@ class LaunchedJobs extends React.Component {
                                                         return item;
                                                     }
                                                 });
+                                            } else if (jobDetails.status === "failed") {
+                                                finishedJobs.push(elem.job_id);
+                                                updatedJobs = currentJobs.map(item => {
+                                                    if (finishedJobs.includes(item.job_id)) {
+                                                        item.status = "failed";
+                                                        return item;
+                                                    } else {
+                                                        return item;
+                                                    }
+                                                });
                                             }
                                         }
                                     });
@@ -116,6 +126,9 @@ class LaunchedJobs extends React.Component {
     }
 
     parseBR = (rawString) => {
+        if (rawString === null) {
+            return "N/A";
+        }
         return rawString.split('\n').map((item, index) => <div key={index}>{item}</div>);
     }
 
@@ -249,9 +262,19 @@ class LaunchedJobs extends React.Component {
                                     {jobStatusIndicator}
                                 </Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">{(jobDetails !== null) ? "Duration: " + jobDetails.time + "(s)" : null}</Card.Subtitle>
-                                <Card.Text className="mt-5">
+                                <Card.Text className="mt-4">
                                     {showModalLoader ? <Spinner animation="border" variant="primary" /> : null}
-                                    {(jobDetails !== null) ? this.parseBR(jobDetails.log) : null}
+                                    {
+                                        (jobDetails !== null) ?
+                                            <div>
+                                                <h5>Log</h5>
+                                                <p>{this.parseBR(jobDetails.log)}</p>
+                                                <div className="mt-2"></div>
+                                                <h5>Output</h5>
+                                                <p>{this.parseBR(jobDetails.output)}</p>
+                                            </div>
+                                            : null
+                                    }
                                 </Card.Text>
                             </Card.Body>
                         </Card>
