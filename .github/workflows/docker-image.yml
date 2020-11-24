@@ -9,13 +9,15 @@ on:
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./pulzar
+        
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file "pulzar/Dockerfile" --tag mauriciocleveland/pulzar-ui:$(date +%s)
+      run: docker build . --file Dockerfile --tag mauriciocleveland/pulzar-ui:$(date +%s)
     
     - name: Push to Docker Hub
       uses: docker/build-push-action@v1
