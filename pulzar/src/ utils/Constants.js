@@ -1,7 +1,7 @@
 class Constants {
     constructor() {
         // URLS
-        this.BASE_URL = 'http://localhost:31414'
+        this.BASE_URL = 'http://pulzar.kuasard.com:31414'
         this.ADMIN = this.BASE_URL + '/admin'
         this.EXTENSION = this.BASE_URL + '/extension'
         this.SCHEDULED_JOBS = this.ADMIN + '/scheduled_jobs';
