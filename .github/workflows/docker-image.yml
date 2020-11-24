@@ -22,11 +22,11 @@ jobs:
     - name: Log into registry
       run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/pulzar-ui
+      run: docker build . --file Dockerfile --tag pulzar-ui
     - name: Tags
       run: |
-        docker tag ${{ secrets.DOCKER_USER }}/pulzar-ui:${{ github.sha }}
-        docker tag ${{ secrets.DOCKER_USER }}/pulzar-ui:latest
+        docker tag pulzar-ui ${{ secrets.DOCKER_USER }}/pulzar-ui:${{ github.sha }}
+        docker tag pulzar-ui ${{ secrets.DOCKER_USER }}/pulzar-ui:latest
     - name: Push image
       run: |
         docker push ${{ secrets.DOCKER_USER }}/pulzar-ui:${{ github.sha }}
