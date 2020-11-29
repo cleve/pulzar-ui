@@ -165,7 +165,7 @@ class LaunchedJobs extends React.Component {
             jobStatusIndicator = <Badge className="ml-2" variant="success">Completed</Badge>
         }
         else if (jobStatus === "pending") {
-            jobStatusIndicator = <Badge className="ml-2" variant="info">Pending</Badge>
+            jobStatusIndicator = <Spinner animation="border" variant="primary" size="sm" />
         } else {
             jobStatusIndicator = <Badge className="ml-2" variant="danger">Failed</Badge>
         }
@@ -194,13 +194,14 @@ class LaunchedJobs extends React.Component {
             headerStyle: (column, colIndex) => {
                 return { width: '100px' };
             },
+            align: 'center',
             formatter: (cell, row) => {
                 if (cell === 'failed') {
                     return (<Badge variant="danger">Failed</Badge>)
                 } else if (cell === 'completed') {
                     return (<Badge variant="success">Completed</Badge>)
                 } else if (cell === 'pending') {
-                    return (<Badge variant="info">Pending</Badge>)
+                    return (<Spinner animation="border" variant="primary" size="sm" />)
                 }
             }
         }, {
