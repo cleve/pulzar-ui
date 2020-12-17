@@ -126,7 +126,7 @@ class LaunchedJobs extends React.Component {
     }
 
     parseBR = (rawString) => {
-        if (rawString === null) {
+        if (typeof rawString === 'undefined' || rawString === null) {
             return "N/A";
         }
         return rawString.split('\n').map((item, index) => <div key={index}>{item}</div>);
