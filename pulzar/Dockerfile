@@ -1,10 +1,10 @@
 # Build React-app
 FROM node:alpine as build
-LABEL version="1.0.1"
+LABEL version="1.0.3"
 WORKDIR /app
 COPY package.json /app
-RUN npm install \
-    yarn --silent
+COPY yarn.lock /app
+RUN yarn --silent
 COPY . /app
 RUN yarn build
 

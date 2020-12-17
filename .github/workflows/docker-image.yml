@@ -25,9 +25,9 @@ jobs:
       run: docker build . --file Dockerfile --tag pulzar-ui
     - name: Tags
       run: |
-        docker tag pulzar-ui ${{ secrets.DOCKER_USER }}/pulzar-ui:1.0.1
+        docker tag pulzar-ui ${{ secrets.DOCKER_USER }}/pulzar-ui:1.0.3
         docker tag pulzar-ui ${{ secrets.DOCKER_USER }}/pulzar-ui:latest
     - name: Push image
       run: |
-        docker push ${{ secrets.DOCKER_USER }}/pulzar-ui:1.0.1
+        docker push ${{ secrets.DOCKER_USER }}/pulzar-ui:1.0.3
         docker push ${{ secrets.DOCKER_USER }}/pulzar-ui:latest
