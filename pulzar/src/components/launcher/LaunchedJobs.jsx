@@ -212,7 +212,11 @@ class LaunchedJobs extends React.Component {
                 return { width: '80px' };
             },
             formatter: (row, cell) => {
-                return (<Button onClick={(e) => this.openModal(cell.job_id, cell.job_name, cell.status)} size="sm" variant="outline-primary">View</Button>)
+                return (
+                    <Button onClick={(e) => this.openModal(cell.job_id, cell.job_name, cell.status)} size="sm" variant="outline-primary">
+                        View
+                    </Button>
+                )
             }
         }];
         return (
@@ -259,24 +263,31 @@ class LaunchedJobs extends React.Component {
                         <Card border="light">
                             <Card.Body>
                                 <Card.Title>
-                                    {jobName}
-                                    {jobStatusIndicator}
+                                    <div>{jobName}</div>
+                                    <div>{jobStatusIndicator}</div>
                                 </Card.Title>
-                                <Card.Subtitle className="mb-2 text-muted">{(jobDetails !== null) ? "Duration: " + jobDetails.time + "(s)" : null}</Card.Subtitle>
-                                <Card.Text className="mt-4">
-                                    {showModalLoader ? <Spinner animation="border" variant="primary" /> : null}
-                                    {
-                                        (jobDetails !== null) ?
-                                            <div>
-                                                <h5>Log</h5>
-                                                <p>{this.parseBR(jobDetails.log)}</p>
-                                                <div className="mt-2"></div>
-                                                <h5>Output</h5>
-                                                <p>{this.parseBR(jobDetails.output)}</p>
-                                            </div>
-                                            : null
-                                    }
-                                </Card.Text>
+                                {
+                                    (jobStatus != "pending") ? 
+
+                                    <div>
+                                        <Card.Subtitle className="mb-2 text-muted">{(jobDetails !== null) ? "Duration: " + jobDetails.time + "(s)" : null}</Card.Subtitle>
+                                        <Card.Text className="mt-4">
+                                            {showModalLoader ? <Spinner animation="border" variant="primary" /> : null}
+                                            {
+                                                (jobDetails !== null) ?
+                                                    <div>
+                                                        <h5>Log</h5>
+                                                        <p>{this.parseBR(jobDetails.log)}</p>
+                                                        <div className="mt-2"></div>
+                                                        <h5>Output</h5>
+                                                        <p>{this.parseBR(jobDetails.output)}</p>
+                                                    </div>
+                                                    : null
+                                            }
+                                        </Card.Text>
+                                    </div> : null
+                                }
+                                
                             </Card.Body>
                         </Card>
 
