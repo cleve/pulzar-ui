@@ -68,7 +68,7 @@ class Home extends React.Component {
                     </Card>
 
                     <Card style={{ width: '18rem' }}>
-                        <Card.Header>Work load</Card.Header>
+                        <Card.Header>Workload</Card.Header>
                         <ListGroup variant="flush">
                             {network_status.map((item, index) => {
                                 return <ListGroup.Item key={index}>{item.node}: {item.load}%</ListGroup.Item>
