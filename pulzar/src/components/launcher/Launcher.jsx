@@ -7,6 +7,7 @@ import { JSONEditor } from 'react-json-editor-viewer';
 import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import Constants from '../../ utils/Constants'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
@@ -23,11 +24,33 @@ class Launcher extends React.Component {
             jobDetails: null,
             showJobLoader: false,
             jobMessageLaunched: "",
-            showJobAlert: false
+            showJobAlert: false,
+            schedulerActive: false,
+            schedulerOptions: false,
+            schedulerInterval: null,
+            schedulerIntervalSelection: 'minutes',
+            schedulerTimeUnit: Array.from({length: 59}, (_, i) => i + 1),
+            schedulerTimeUnitSelection: 1,
+            schedulerRepetitive: false,
         };
         this.constants = new Constants();
 
         this.onJsonChange = this.onJsonChange.bind(this);
+    }
+
+    schedulerChecker = () => {
+
+    }
+
+    schedulerIntervalSelector = (event) => {
+        if (event.target.value == "Minutes") {
+            this.setState({schedulerTimeUnit: Array.from({length: 59}, (_, i) => i + 1)});
+        } else if (event.target.value == "Hours") {
+            this.setState({schedulerTimeUnit: Array.from({length: 23}, (_, i) => i + 1)});
+        } else if (event.target.value == "Weeks") {
+            this.setState({schedulerTimeUnit: Array.from({length: 7}, (_, i) => i + 1)});
+        }
+        this.setState({schedulerIntervalSelection: (event.target.value).toLowerCase()});
     }
 
     onJsonChange(key, value, parent, data) {
@@ -60,6 +83,7 @@ class Launcher extends React.Component {
 
     prepareLaunching = (jobDetails) => {
         const self = this;
+        console.log(jobDetails);
         let jsonString = this.jsonString(jobDetails.args);
         this.setState({
             showJson: (jsonString !== null) ? true : false,
@@ -75,9 +99,21 @@ class Launcher extends React.Component {
             showJobLoader: true
         });
         const url = this.constants.JOB_LAUNCHER + this.state.jobDetails.path
+        const schedulerActive = this.state.schedulerActive;
         let args = this.state.currentArguments;
         if (args === null) {
             args = { job: 'no args' }
+        }
+        // Is scheduler type
+        if (schedulerActive) {
+            let schedulerIntervalSelection = this.state.schedulerIntervalSelection;
+            let schedulerTimeUnitSelection = this.state.schedulerTimeUnitSelection;
+            let schedulerRepetitive = this.state.schedulerRepetitive;
+            args["scheduled"] = {
+                "interval": schedulerIntervalSelection,
+                "time_unit": schedulerTimeUnitSelection,
+                "repeat": schedulerRepetitive ? 1 : 0
+            }
         }
         // Request
         axios.post(url, args)
@@ -151,6 +187,13 @@ class Launcher extends React.Component {
         const jobMessageLaunched = this.state.jobMessageLaunched;
         const showJobAlert = this.state.showJobAlert;
         const showJson = this.state.showJson;
+        const schedulerOptions = this.state.schedulerOptions;
+        const schedulerInterval = this.state.schedulerInterval;
+        const schedulerTimeUnit = this.state.schedulerTimeUnit;
+        const schedulerTimeUnitSelection = this.state.schedulerTimeUnitSelection;
+        const schedulerIntervalSelection = this.state.schedulerIntervalSelection;
+        const schedulerTimeUnitData = schedulerTimeUnit.map(item => {return <option>{item}</option>})
+        const schedulerRepetitive = this.state.schedulerRepetitive;
         return (
             <div>
 
@@ -203,7 +246,33 @@ class Launcher extends React.Component {
                                         onChange={this.onJsonChange}
                                     /> : null}
 
-                                    <Button disabled={showJobAlert} onClick={this.launchJob} className="mt-5" variant="primary" size="lg">
+                                    <div className="mt-4">
+                                    </div>
+                                        <Form.Group controlId="formGroupSchedule">
+                                            <Form.Check type="checkbox" checked={schedulerOptions} onChange={(e) => {this.setState({schedulerOptions: e.target.checked, schedulerActive: e.target.checked});console.log(e.target.checked)}} label="Schedule" /> 
+                                        </Form.Group>
+                                        {schedulerOptions ?
+                                        <div>
+                                        <Form.Group controlId="formGroupInterval">
+                                        <Form.Label>Interval</Form.Label>
+                                            <Form.Control as="select" onChange={this.schedulerIntervalSelector} value={this.state.schedulerIntervalSelection}>
+                                                <option>Minutes</option>
+                                                <option>Hours</option>
+                                                <option>Weeks</option>
+                                            </Form.Control>
+                                        </Form.Group>
+                                        <Form.Group controlId="formGroupTimeUnit">
+                                        <Form.Label>Time unit</Form.Label>
+                                            <Form.Control as="select" value={schedulerTimeUnitSelection} onChange={(e) => {this.setState({schedulerTimeUnitSelection:e.target.value})}}>
+                                                {schedulerTimeUnitData}
+                                            </Form.Control>
+                                        </Form.Group>
+                                        <Form.Group controlId="formGroupRepetitive">
+                                            <Form.Check type="checkbox" checked={schedulerRepetitive} onChange={(e) => {this.setState({schedulerRepetitive: e.target.checked})}} label="Repetitive" /> 
+                                        </Form.Group></div> : null
+                                        }
+
+                                    <Button disabled={showJobAlert} onClick={this.launchJob} className="mt-2" variant="primary" size="lg">
                                         {showJobLoader ? <div>
                                             <Spinner
                                                 as="span"
