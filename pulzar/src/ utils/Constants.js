@@ -11,6 +11,7 @@ class Constants {
         this.SEARCH_DB = this.EXTENSION + '/search/';
         this.JOB_CATALOG = this.ADMIN + '/job_catalog';
         this.JOB_LAUNCHER = this.BASE_URL + '/launch_job/';
+        this.CANCEL_JOB = this.BASE_URL + '/cancel_job/';
     }
 }
 
